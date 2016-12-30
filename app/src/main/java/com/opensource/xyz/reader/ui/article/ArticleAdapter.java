@@ -2,6 +2,7 @@ package com.opensource.xyz.reader.ui.article;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.opensource.xyz.reader.R;
 import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.util.DynamicHeightNetworkImageView;
 import com.opensource.xyz.reader.util.ImageLoaderHelper;
+import com.opensource.xyz.reader.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     public void onBindViewHolder(final ArticleViewHolder holder, int position) {
         Article article = mArticles.get(position);
         holder.tvTitle.setText(article.title());
-        holder.tvSubTitle.setText(article.publishedDate() + " by " + article.author());
+        holder.tvSubTitle.setText(DateUtils.getRelativeTimeSpanString(
+                Utils.getTimeInMilliSeconds(article.publishedDate()),
+                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL).toString()
+                + " by <font color='#ffffff'>"
+                + article.author()
+                + "</font>");
         holder.thumbnailView.setImageUrl(article.thumb(),
                 ImageLoaderHelper.getInstance(mContext).getImageLoader());
         holder.thumbnailView.setAspectRatio(article.aspectRatio());

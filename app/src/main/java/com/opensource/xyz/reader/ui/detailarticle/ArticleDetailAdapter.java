@@ -10,16 +10,16 @@ import java.util.List;
 public class ArticleDetailAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> mFragments = new ArrayList<>();
-    private Integer totalArticles = 0;
+    private final List<String> mFragmentTitles = new ArrayList<>();
 
 
     public ArticleDetailAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public void addFragment(Fragment fragment, Integer totalArticles) {
+    public void addFragment(Fragment fragment, String title) {
         mFragments.add(fragment);
-        this.totalArticles = totalArticles;
+        mFragmentTitles.add(title);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ArticleDetailAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return totalArticles;
+        return mFragments.size();
     }
 
     @Override
@@ -39,6 +39,6 @@ public class ArticleDetailAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return null;
+        return mFragmentTitles.get(position);
     }
 }

@@ -40,39 +40,13 @@ public class ArticleDetailActivity extends AppCompatActivity {
         mArticleAdapter = new ArticleDetailAdapter(getSupportFragmentManager());
 
         for (int i=0; i<mArticleList.size(); ++i) {
-            mArticleAdapter.addFragment(ArticleDetailFragment.newInstance(mArticleList.get(i)),
-                    mArticleList.size());
+            mArticleAdapter.addFragment(ArticleDetailFragment.newInstance(mArticleList.get(i)), "");
         }
-        mPager.setCurrentItem(position);
         mPager.setAdapter(mArticleAdapter);
+        mPager.setCurrentItem(position);
 
         mPager.setPageMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                         getResources().getDisplayMetrics()));
         mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
-
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                ((UpdateArticle) getSupportFragmentManager()
-                        .findFragmentByTag(getFragmentTag(position)))
-                        .updateArticle(mArticleList.get(position));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
-
-    private String getFragmentTag(int position) {
-        return "android:switcher:" + R.id.pager + ":" + position;
-    }
-
 }

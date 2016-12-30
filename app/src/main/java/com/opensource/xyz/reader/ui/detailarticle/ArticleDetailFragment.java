@@ -9,6 +9,7 @@ import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  * either contained in a {@link ArticleActivity} in two-pane mode (on
  * tablets) or a {@link ArticleDetailActivity} on handsets.
  */
-public class ArticleDetailFragment extends Fragment implements UpdateArticle {
+public class ArticleDetailFragment extends Fragment {
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
@@ -110,7 +111,9 @@ public class ArticleDetailFragment extends Fragment implements UpdateArticle {
                         + " by <font color='#ffffff'>"
                         + mArticle.author()
                         + "</font>"));
+        tvArticleByLine.setMovementMethod(LinkMovementMethod.getInstance());
         tvArticleBody.setText(Html.fromHtml(mArticle.body()));
+        tvArticleBody.setMovementMethod(LinkMovementMethod.getInstance());
         ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                 .get(mArticle.photo(), new ImageLoader.ImageListener() {
                             @Override
@@ -127,11 +130,5 @@ public class ArticleDetailFragment extends Fragment implements UpdateArticle {
 
                             }
                         });
-    }
-
-    @Override
-    public void updateArticle(Article article) {
-        mArticle = article;
-        bindViews();
     }
 }
