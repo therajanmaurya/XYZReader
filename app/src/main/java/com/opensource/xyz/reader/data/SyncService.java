@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import com.opensource.xyz.reader.BoilerplateApplication;
+import com.opensource.xyz.reader.ReaderApplication;
 import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.util.AndroidComponentUtil;
 import com.opensource.xyz.reader.util.NetworkUtil;
@@ -37,7 +37,7 @@ public class SyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        BoilerplateApplication.get(this).getComponent().inject(this);
+        ReaderApplication.get(this).getComponent().inject(this);
     }
 
     @Override

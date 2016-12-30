@@ -8,7 +8,7 @@ import org.junit.runners.model.Statement;
 
 import com.opensource.xyz.reader.test.common.injection.component.TestComponent;
 import com.opensource.xyz.reader.test.common.injection.module.ApplicationTestModule;
-import com.opensource.xyz.reader.BoilerplateApplication;
+import com.opensource.xyz.reader.ReaderApplication;
 import com.opensource.xyz.reader.data.DataManager;
 import com.opensource.xyz.reader.test.common.injection.component.DaggerTestComponent;
 
@@ -26,7 +26,7 @@ public class TestComponentRule implements TestRule {
 
     public TestComponentRule(Context context) {
         mContext = context;
-        BoilerplateApplication application = BoilerplateApplication.get(context);
+        ReaderApplication application = ReaderApplication.get(context);
         mTestComponent = DaggerTestComponent.builder()
                 .applicationTestModule(new ApplicationTestModule(application))
                 .build();
@@ -45,7 +45,7 @@ public class TestComponentRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                BoilerplateApplication application = BoilerplateApplication.get(mContext);
+                ReaderApplication application = ReaderApplication.get(mContext);
                 application.setComponent(mTestComponent);
                 base.evaluate();
                 application.setComponent(null);

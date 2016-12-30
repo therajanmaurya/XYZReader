@@ -3,7 +3,7 @@ package com.opensource.xyz.reader.ui.base;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.opensource.xyz.reader.BoilerplateApplication;
+import com.opensource.xyz.reader.ReaderApplication;
 import com.opensource.xyz.reader.injection.component.ActivityComponent;
 import com.opensource.xyz.reader.injection.component.ConfigPersistentComponent;
 import com.opensource.xyz.reader.injection.component.DaggerConfigPersistentComponent;
@@ -41,7 +41,7 @@ public class BaseActivity extends AppCompatActivity {
         if (!sComponentsMap.containsKey(mActivityId)) {
             Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
-                    .applicationComponent(BoilerplateApplication.get(this).getComponent())
+                    .applicationComponent(ReaderApplication.get(this).getComponent())
                     .build();
             sComponentsMap.put(mActivityId, configPersistentComponent);
         } else {

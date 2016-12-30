@@ -11,7 +11,7 @@ import com.opensource.xyz.reader.injection.module.ApplicationModule;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-public class BoilerplateApplication extends Application  {
+public class ReaderApplication extends Application  {
 
     ApplicationComponent mApplicationComponent;
 
@@ -25,8 +25,8 @@ public class BoilerplateApplication extends Application  {
         }
     }
 
-    public static BoilerplateApplication get(Context context) {
-        return (BoilerplateApplication) context.getApplicationContext();
+    public static ReaderApplication get(Context context) {
+        return (ReaderApplication) context.getApplicationContext();
     }
 
     public ApplicationComponent getComponent() {
