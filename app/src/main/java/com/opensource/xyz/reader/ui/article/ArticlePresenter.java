@@ -1,5 +1,7 @@
-package com.opensource.xyz.reader.ui.main;
+package com.opensource.xyz.reader.ui.article;
 
+import com.opensource.xyz.reader.data.DataManager;
+import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.injection.ConfigPersistent;
 import com.opensource.xyz.reader.ui.base.BasePresenter;
 import com.opensource.xyz.reader.util.RxUtil;
@@ -13,22 +15,20 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
-import com.opensource.xyz.reader.data.DataManager;
-import com.opensource.xyz.reader.data.model.Ribot;
 
 @ConfigPersistent
-public class MainPresenter extends BasePresenter<MainMvpView> {
+public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
-    public MainPresenter(DataManager dataManager) {
+    public ArticlePresenter(DataManager dataManager) {
         mDataManager = dataManager;
     }
 
     @Override
-    public void attachView(MainMvpView mvpView) {
+    public void attachView(ArticleMvpView mvpView) {
         super.attachView(mvpView);
     }
 
@@ -38,15 +38,16 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
-    public void loadRibots() {
+    public void loadArticles() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getRibots()
+        mSubscription = mDataManager.syncArticles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<Ribot>>() {
+                .subscribe(new Subscriber<List<Article>>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
@@ -56,11 +57,11 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     }
 
                     @Override
-                    public void onNext(List<Ribot> ribots) {
-                        if (ribots.isEmpty()) {
-                            getMvpView().showRibotsEmpty();
+                    public void onNext(List<Article> articles) {
+                        if (articles.isEmpty()) {
+                            getMvpView().showArticlesEmpty();
                         } else {
-                            getMvpView().showRibots(ribots);
+                            getMvpView().showArticles(articles);
                         }
                     }
                 });

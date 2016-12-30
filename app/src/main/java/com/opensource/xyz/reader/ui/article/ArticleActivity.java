@@ -1,4 +1,4 @@
-package com.opensource.xyz.reader.ui.main;
+package com.opensource.xyz.reader.ui.article;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.opensource.xyz.reader.R;
 import com.opensource.xyz.reader.data.SyncService;
-import com.opensource.xyz.reader.data.model.Ribot;
+import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.ui.base.BaseActivity;
 import com.opensource.xyz.reader.util.DialogFactory;
 
@@ -21,13 +21,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+public class ArticleActivity extends BaseActivity implements ArticleMvpView {
 
-    private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+    private static final String EXTRA_TRIGGER_SYNC_FLAG = "ArticleActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
-    @Inject MainPresenter mMainPresenter;
-    @Inject RibotsAdapter mRibotsAdapter;
+    @Inject
+    ArticlePresenter mMainPresenter;
+    @Inject
+    ArticleAdapter mRibotsAdapter;
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
@@ -37,7 +38,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
      * only be set to false during testing.
      */
     public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, ArticleActivity.class);
         intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
         return intent;
     }
@@ -46,13 +47,13 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_article);
         ButterKnife.bind(this);
 
         mRecyclerView.setAdapter(mRibotsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
-        mMainPresenter.loadRibots();
+        mMainPresenter.loadArticles();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(SyncService.getStartIntent(this));
@@ -69,8 +70,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     /***** MVP View methods implementation *****/
 
     @Override
-    public void showRibots(List<Ribot> ribots) {
-        mRibotsAdapter.setRibots(ribots);
+    public void showArticles(List<Article> articles) {
+        mRibotsAdapter.setArticles(articles);
         mRibotsAdapter.notifyDataSetChanged();
     }
 
@@ -81,8 +82,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showRibotsEmpty() {
-        mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
+    public void showArticlesEmpty() {
+        mRibotsAdapter.setArticles(Collections.<Article>emptyList());
         mRibotsAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }

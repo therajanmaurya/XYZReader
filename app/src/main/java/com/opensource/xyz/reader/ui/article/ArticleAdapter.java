@@ -1,11 +1,13 @@
-package com.opensource.xyz.reader.ui.main;
+package com.opensource.xyz.reader.ui.article;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.opensource.xyz.reader.R;
+import com.opensource.xyz.reader.data.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +16,18 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.opensource.xyz.reader.R;
-import com.opensource.xyz.reader.data.model.Ribot;
 
-public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RibotViewHolder> {
 
-    private List<Ribot> mRibots;
+    private List<Article> mArticles;
 
     @Inject
-    public RibotsAdapter() {
-        mRibots = new ArrayList<>();
+    public ArticleAdapter() {
+        mArticles = new ArrayList<>();
     }
 
-    public void setRibots(List<Ribot> ribots) {
-        mRibots = ribots;
+    public void setArticles(List<Article> articles) {
+        mArticles = articles;
     }
 
     @Override
@@ -39,16 +39,16 @@ public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewH
 
     @Override
     public void onBindViewHolder(final RibotViewHolder holder, int position) {
-        Ribot ribot = mRibots.get(position);
-        holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
+        Article article = mArticles.get(position);
+       // holder.hexColorView.setBackgroundColor(Color.parseColor(article.author()));
         holder.nameTextView.setText(String.format("%s %s",
-                ribot.profile().name().first(), ribot.profile().name().last()));
-        holder.emailTextView.setText(ribot.profile().email());
+                article.author(), article.thumb()));
+        holder.emailTextView.setText(article.title());
     }
 
     @Override
     public int getItemCount() {
-        return mRibots.size();
+        return mArticles.size();
     }
 
     class RibotViewHolder extends RecyclerView.ViewHolder {

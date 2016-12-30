@@ -17,7 +17,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.opensource.xyz.reader.test.common.TestComponentRule;
 import com.opensource.xyz.reader.test.common.TestDataFactory;
 import com.opensource.xyz.reader.data.model.Ribot;
-import com.opensource.xyz.reader.ui.main.MainActivity;
+import com.opensource.xyz.reader.ui.article.ArticleActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,14 +34,14 @@ public class MainActivityTest {
 
     public final TestComponentRule component =
             new TestComponentRule(InstrumentationRegistry.getTargetContext());
-    public final ActivityTestRule<MainActivity> main =
-            new ActivityTestRule<MainActivity>(MainActivity.class, false, false) {
+    public final ActivityTestRule<ArticleActivity> main =
+            new ActivityTestRule<ArticleActivity>(ArticleActivity.class, false, false) {
                 @Override
                 protected Intent getActivityIntent() {
                     // Override the default intent so we pass a false flag for syncing so it doesn't
                     // start a sync service in the background that would affect  the behaviour of
                     // this test.
-                    return MainActivity.getStartIntent(
+                    return ArticleActivity.getStartIntent(
                             InstrumentationRegistry.getTargetContext(), false);
                 }
             };

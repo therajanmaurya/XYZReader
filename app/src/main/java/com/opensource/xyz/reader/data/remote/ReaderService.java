@@ -2,6 +2,7 @@ package com.opensource.xyz.reader.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.data.model.Ribot;
 import com.opensource.xyz.reader.util.MyGsonTypeAdapterFactory;
 
@@ -20,7 +21,10 @@ public interface ReaderService {
     String ENDPOINT = "https://dl.dropboxusercontent.com/u/231329/xyzreader_data/";
 
     @GET("data.json")
-    Observable<List<Ribot>> getArticles();
+    Observable<List<Ribot>> getRibots();
+
+    @GET("data.json")
+    Observable<List<Article>> getArticles();
 
     /******** Helper class that sets up a new services *******/
     class Creator {

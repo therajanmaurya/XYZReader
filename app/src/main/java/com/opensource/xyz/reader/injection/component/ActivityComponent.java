@@ -1,10 +1,10 @@
 package com.opensource.xyz.reader.injection.component;
 
+import com.opensource.xyz.reader.injection.PerActivity;
 import com.opensource.xyz.reader.injection.module.ActivityModule;
-import com.opensource.xyz.reader.ui.main.MainActivity;
+import com.opensource.xyz.reader.ui.article.ArticleActivity;
 
 import dagger.Subcomponent;
-import com.opensource.xyz.reader.injection.PerActivity;
 
 /**
  * This component inject dependencies to all Activities across the application
@@ -13,6 +13,6 @@ import com.opensource.xyz.reader.injection.PerActivity;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
 
-    void inject(MainActivity mainActivity);
+    void inject(ArticleActivity mainActivity);
 
 }
