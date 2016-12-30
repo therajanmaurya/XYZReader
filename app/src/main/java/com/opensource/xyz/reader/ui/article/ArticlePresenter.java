@@ -52,7 +52,7 @@ public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e(e, "There was an error loading the ribots.");
+                        Timber.e(e, "There was an error loading the articles.");
                         getMvpView().showError();
                     }
 

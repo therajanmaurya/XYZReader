@@ -8,17 +8,18 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import com.opensource.xyz.reader.BoilerplateApplication;
+import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.util.AndroidComponentUtil;
 import com.opensource.xyz.reader.util.NetworkUtil;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
-
-import com.opensource.xyz.reader.data.model.Ribot;
 
 public class SyncService extends Service {
 
@@ -51,9 +52,9 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncRibots()
+        mSubscription = mDataManager.syncArticles()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Ribot>() {
+                .subscribe(new Subscriber<List<Article>>() {
                     @Override
                     public void onCompleted() {
                         Timber.i("Synced successfully!");
@@ -62,16 +63,14 @@ public class SyncService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.w(e, "Error syncing.");
-                        stopSelf(startId);
 
                     }
 
                     @Override
-                    public void onNext(Ribot ribot) {
+                    public void onNext(List<Article> articles) {
+
                     }
                 });
-
         return START_STICKY;
     }
 

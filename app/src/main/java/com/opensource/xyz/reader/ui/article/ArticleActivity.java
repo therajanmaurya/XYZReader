@@ -26,11 +26,13 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView {
     private static final String EXTRA_TRIGGER_SYNC_FLAG = "ArticleActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject
-    ArticlePresenter mMainPresenter;
-    @Inject
-    ArticleAdapter mRibotsAdapter;
+    ArticlePresenter mArticlePresenter;
 
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @Inject
+    ArticleAdapter mArticleAdapter;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     /**
      * Return an Intent to start this Activity.
@@ -50,10 +52,10 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView {
         setContentView(R.layout.activity_article);
         ButterKnife.bind(this);
 
-        mRecyclerView.setAdapter(mRibotsAdapter);
+        mRecyclerView.setAdapter(mArticleAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mMainPresenter.attachView(this);
-        mMainPresenter.loadArticles();
+        mArticlePresenter.attachView(this);
+        mArticlePresenter.loadArticles();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(SyncService.getStartIntent(this));
@@ -64,15 +66,15 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView {
     protected void onDestroy() {
         super.onDestroy();
 
-        mMainPresenter.detachView();
+        mArticlePresenter.detachView();
     }
 
     /***** MVP View methods implementation *****/
 
     @Override
     public void showArticles(List<Article> articles) {
-        mRibotsAdapter.setArticles(articles);
-        mRibotsAdapter.notifyDataSetChanged();
+        mArticleAdapter.setArticles(articles);
+        mArticleAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -83,8 +85,8 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView {
 
     @Override
     public void showArticlesEmpty() {
-        mRibotsAdapter.setArticles(Collections.<Article>emptyList());
-        mRibotsAdapter.notifyDataSetChanged();
+        mArticleAdapter.setArticles(Collections.<Article>emptyList());
+        mArticleAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }
 
