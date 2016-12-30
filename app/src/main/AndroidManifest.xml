@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.detailarticle.ArticleDetailActivity"/>
+
         <service android:name="com.opensource.xyz.reader.data.SyncService"/>
 
         <receiver
