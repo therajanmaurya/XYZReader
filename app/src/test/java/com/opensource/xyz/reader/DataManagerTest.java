@@ -15,7 +15,7 @@ import com.opensource.xyz.reader.data.DataManager;
 import com.opensource.xyz.reader.data.local.DatabaseHelper;
 import com.opensource.xyz.reader.data.local.PreferencesHelper;
 import com.opensource.xyz.reader.data.model.Ribot;
-import com.opensource.xyz.reader.data.remote.RibotsService;
+import com.opensource.xyz.reader.data.remote.ReaderService;
 import com.opensource.xyz.reader.test.common.TestDataFactory;
 
 import static org.mockito.Matchers.anyListOf;
@@ -36,7 +36,8 @@ public class DataManagerTest {
 
     @Mock DatabaseHelper mMockDatabaseHelper;
     @Mock PreferencesHelper mMockPreferencesHelper;
-    @Mock RibotsService mMockRibotsService;
+    @Mock
+    ReaderService mMockRibotsService;
     private DataManager mDataManager;
 
     @Before
@@ -65,24 +66,24 @@ public class DataManagerTest {
 
         mDataManager.syncRibots().subscribe();
         // Verify right calls to helper methods
-        verify(mMockRibotsService).getRibots();
+        verify(mMockRibotsService).getArticles();
         verify(mMockDatabaseHelper).setRibots(ribots);
     }
 
     @Test
     public void syncRibotsDoesNotCallDatabaseWhenApiFails() {
-        when(mMockRibotsService.getRibots())
+        when(mMockRibotsService.getArticles())
                 .thenReturn(Observable.<List<Ribot>>error(new RuntimeException()));
 
         mDataManager.syncRibots().subscribe(new TestSubscriber<Ribot>());
         // Verify right calls to helper methods
-        verify(mMockRibotsService).getRibots();
+        verify(mMockRibotsService).getArticles();
         verify(mMockDatabaseHelper, never()).setRibots(anyListOf(Ribot.class));
     }
 
     private void stubSyncRibotsHelperCalls(List<Ribot> ribots) {
         // Stub calls to the ribot service and database helper.
-        when(mMockRibotsService.getRibots())
+        when(mMockRibotsService.getArticles())
                 .thenReturn(Observable.just(ribots));
         when(mMockDatabaseHelper.setRibots(ribots))
                 .thenReturn(Observable.from(ribots));

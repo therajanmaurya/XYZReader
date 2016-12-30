@@ -7,7 +7,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import com.opensource.xyz.reader.data.remote.RibotsService;
+
+import com.opensource.xyz.reader.data.remote.ReaderService;
 import com.opensource.xyz.reader.injection.ApplicationContext;
 
 /**
@@ -34,8 +35,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    ReaderService provideRibotsService() {
+        return ReaderService.Creator.newReaderService();
     }
 
 }

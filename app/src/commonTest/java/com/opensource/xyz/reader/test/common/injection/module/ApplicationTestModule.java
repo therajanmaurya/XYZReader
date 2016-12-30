@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import com.opensource.xyz.reader.data.DataManager;
-import com.opensource.xyz.reader.data.remote.RibotsService;
+import com.opensource.xyz.reader.data.remote.ReaderService;
 import com.opensource.xyz.reader.injection.ApplicationContext;
 
 import static org.mockito.Mockito.mock;
@@ -47,8 +47,8 @@ public class ApplicationTestModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return mock(RibotsService.class);
+    ReaderService provideRibotsService() {
+        return mock(ReaderService.class);
     }
 
 }
