@@ -23,7 +23,7 @@ public abstract class Article implements Parcelable {
     public abstract String thumb();
 
     @SerializedName("aspect_ratio")
-    public abstract Double aspectRatio();
+    public abstract Float aspectRatio();
 
     @SerializedName("author")
     public abstract String author();
@@ -50,7 +50,7 @@ public abstract class Article implements Parcelable {
         public abstract Builder setId(Integer id);
         public abstract Builder setPhoto(String photo);
         public abstract Builder setThumb(String thumb);
-        public abstract Builder setAspectRatio(Double aspectRatio);
+        public abstract Builder setAspectRatio(Float aspectRatio);
         public abstract Builder setAuthor(String author);
         public abstract Builder setTitle(String title);
         public abstract Builder setPublishedDate(String publishedDate);

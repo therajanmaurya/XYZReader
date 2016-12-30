@@ -1,5 +1,6 @@
 package com.opensource.xyz.reader.ui.article;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import com.opensource.xyz.reader.R;
 import com.opensource.xyz.reader.data.model.Article;
+import com.opensource.xyz.reader.util.DynamicHeightNetworkImageView;
+import com.opensource.xyz.reader.util.ImageLoaderHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +20,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RibotViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     private List<Article> mArticles;
+    private Context mContext;
 
     @Inject
     public ArticleAdapter() {
@@ -31,19 +35,24 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RibotVie
     }
 
     @Override
-    public RibotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_ribot, parent, false);
-        return new RibotViewHolder(itemView);
+                .inflate(R.layout.list_item_article, parent, false);
+        return new ArticleViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final RibotViewHolder holder, int position) {
+    public void onBindViewHolder(final ArticleViewHolder holder, int position) {
         Article article = mArticles.get(position);
-       // holder.hexColorView.setBackgroundColor(Color.parseColor(article.author()));
-        holder.nameTextView.setText(String.format("%s %s",
-                article.author(), article.thumb()));
-        holder.emailTextView.setText(article.title());
+        holder.tvTitle.setText(article.title());
+        holder.tvSubTitle.setText(article.publishedDate() + " by " + article.author());
+        holder.thumbnailView.setImageUrl(article.thumb(),
+                ImageLoaderHelper.getInstance(mContext).getImageLoader());
+        holder.thumbnailView.setAspectRatio(article.aspectRatio());
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
     }
 
     @Override
@@ -51,13 +60,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RibotVie
         return mArticles.size();
     }
 
-    class RibotViewHolder extends RecyclerView.ViewHolder {
+    class ArticleViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.view_hex_color) View hexColorView;
-        @BindView(R.id.text_name) TextView nameTextView;
-        @BindView(R.id.text_email) TextView emailTextView;
+        @BindView(R.id.thumbnail)
+        DynamicHeightNetworkImageView thumbnailView;
 
-        public RibotViewHolder(View itemView) {
+        @BindView(R.id.article_title)
+        TextView tvTitle;
+
+        @BindView(R.id.article_subtitle)
+        TextView tvSubTitle;
+
+        public ArticleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

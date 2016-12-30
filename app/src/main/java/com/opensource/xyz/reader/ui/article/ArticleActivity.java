@@ -3,8 +3,8 @@ package com.opensource.xyz.reader.ui.article;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.Toast;
 
 import com.opensource.xyz.reader.R;
@@ -12,6 +12,7 @@ import com.opensource.xyz.reader.data.SyncService;
 import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.ui.base.BaseActivity;
 import com.opensource.xyz.reader.util.DialogFactory;
+import com.opensource.xyz.reader.util.ItemOffsetDecoration;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,11 +50,17 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setContentView(R.layout.activity_article);
+        setContentView(R.layout.activity_article_list);
         ButterKnife.bind(this);
 
+        int columnCount = getResources().getInteger(R.integer.list_column_count);
+        StaggeredGridLayoutManager sglm =
+                new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(sglm);
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.item_offset);
+        mRecyclerView.addItemDecoration(itemDecoration);
+        mArticleAdapter.setContext(this);
         mRecyclerView.setAdapter(mArticleAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mArticlePresenter.attachView(this);
         mArticlePresenter.loadArticles();
 
