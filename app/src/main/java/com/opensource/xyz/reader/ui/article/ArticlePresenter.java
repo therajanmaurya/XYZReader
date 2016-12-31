@@ -41,6 +41,7 @@ public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
     public void loadArticles() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
+        getMvpView().showProgressBar(true);
         mSubscription = mDataManager.getArticles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -54,6 +55,7 @@ public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the articles.");
                         getMvpView().showError();
+                        getMvpView().showProgressBar(false);
                     }
 
                     @Override
@@ -63,6 +65,7 @@ public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
                         } else {
                             getMvpView().showArticles(articles);
                         }
+                        getMvpView().showProgressBar(false);
                     }
                 });
     }

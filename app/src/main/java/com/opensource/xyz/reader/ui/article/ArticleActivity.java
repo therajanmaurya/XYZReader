@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ArticleActivity extends BaseActivity implements ArticleMvpView,
-        RecyclerItemClickListener.OnItemClickListener {
+        RecyclerItemClickListener.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG = "ArticleActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
@@ -41,6 +42,9 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private List<Article> mArticleList;
 
@@ -61,6 +65,7 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
         activityComponent().inject(this);
         setContentView(R.layout.activity_article_list);
         ButterKnife.bind(this);
+        mArticlePresenter.attachView(this);
         mArticleList = new ArrayList<>();
 
         int columnCount = getResources().getInteger(R.integer.list_column_count);
@@ -69,11 +74,11 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
         StaggeredGridLayoutManager sglm =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(sglm);
-
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mArticleAdapter.setContext(this);
         mRecyclerView.setAdapter(mArticleAdapter);
-        mArticlePresenter.attachView(this);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.swipeRefreshColors));
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         mArticlePresenter.loadArticles();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
@@ -111,6 +116,11 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
     }
 
     @Override
+    public void showProgressBar(Boolean show) {
+        mSwipeRefreshLayout.setRefreshing(show);
+    }
+
+    @Override
     public void onItemClick(View childView, int position) {
         Intent intent = new Intent(this, ArticleDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.ARTICLES,
@@ -122,5 +132,10 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
     @Override
     public void onItemLongPress(View childView, int position) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        mArticlePresenter.loadArticles();
     }
 }

@@ -31,15 +31,17 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="6dp"
+            android:scrollbars="vertical"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="6dp"
-        android:paddingTop="?actionBarSize"
-        android:scrollbars="vertical"/>
+
 </android.support.design.widget.CoordinatorLayout>

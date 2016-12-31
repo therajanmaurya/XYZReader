@@ -11,6 +11,8 @@ public interface ArticleMvpView extends MvpView {
 
     void showArticlesEmpty();
 
+    void showProgressBar(Boolean show);
+
     void showError();
 
 }
