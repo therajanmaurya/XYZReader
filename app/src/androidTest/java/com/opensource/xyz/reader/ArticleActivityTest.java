@@ -14,9 +14,9 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.test.common.TestComponentRule;
 import com.opensource.xyz.reader.test.common.TestDataFactory;
-import com.opensource.xyz.reader.data.model.Ribot;
 import com.opensource.xyz.reader.ui.article.ArticleActivity;
 
 import org.junit.Rule;
@@ -30,7 +30,7 @@ import java.util.List;
 import rx.Observable;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class ArticleActivityTest {
 
     public final TestComponentRule component =
             new TestComponentRule(InstrumentationRegistry.getTargetContext());
@@ -52,22 +52,18 @@ public class MainActivityTest {
     public final TestRule chain = RuleChain.outerRule(component).around(main);
 
     @Test
-    public void listOfRibotsShows() {
-        List<Ribot> testDataRibots = TestDataFactory.makeListRibots(20);
-        when(component.getMockDataManager().getRibots())
-                .thenReturn(Observable.just(testDataRibots));
+    public void listOfArticlesShows() {
+        List<Article> testDataArticles = TestDataFactory.makeListArticles(20);
+        when(component.getMockDataManager().getArticles())
+                .thenReturn(Observable.just(testDataArticles));
 
         main.launchActivity(null);
 
         int position = 0;
-        for (Ribot ribot : testDataRibots) {
+        for (Article article : testDataArticles) {
             onView(withId(R.id.recycler_view))
                     .perform(RecyclerViewActions.scrollToPosition(position));
-            String name = String.format("%s %s", ribot.profile().name().first(),
-                    ribot.profile().name().last());
-            onView(withText(name))
-                    .check(matches(isDisplayed()));
-            onView(withText(ribot.profile().email()))
+            onView(withText(article.title()))
                     .check(matches(isDisplayed()));
             position++;
         }

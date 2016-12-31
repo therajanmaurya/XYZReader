@@ -3,13 +3,13 @@ package com.opensource.xyz.reader.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.opensource.xyz.reader.data.remote.ReaderService;
+import com.opensource.xyz.reader.injection.ApplicationContext;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-
-import com.opensource.xyz.reader.data.remote.ReaderService;
-import com.opensource.xyz.reader.injection.ApplicationContext;
 
 /**
  * Provide application-level dependencies.
@@ -35,7 +35,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    ReaderService provideRibotsService() {
+    ReaderService provideReaderService() {
         return ReaderService.Creator.newReaderService();
     }
 

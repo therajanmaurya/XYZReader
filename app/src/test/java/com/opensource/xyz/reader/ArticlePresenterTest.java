@@ -1,6 +1,13 @@
 package com.opensource.xyz.reader;
 
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.opensource.xyz.reader.data.DataManager;
+import com.opensource.xyz.reader.data.model.Article;
+import com.opensource.xyz.reader.test.common.TestDataFactory;
 import com.opensource.xyz.reader.ui.article.ArticleMvpView;
 import com.opensource.xyz.reader.ui.article.ArticlePresenter;
 import com.opensource.xyz.reader.util.RxSchedulersOverrideRule;
@@ -8,16 +15,23 @@ import com.opensource.xyz.reader.util.RxSchedulersOverrideRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
+import java.util.List;
+
+import rx.Observable;
+
 @RunWith(MockitoJUnitRunner.class)
-public class MainPresenterTest {
+public class ArticlePresenterTest {
 
     @Mock
     ArticleMvpView mMockMainMvpView;
     @Mock DataManager mMockDataManager;
+
     private ArticlePresenter mMainPresenter;
 
     @Rule
@@ -34,38 +48,37 @@ public class MainPresenterTest {
         mMainPresenter.detachView();
     }
 
-   /* @Test
-    public void loadRibotsReturnsRibots() {
-        List<Ribot> ribots = TestDataFactory.makeListRibots(10);
+    @Test
+    public void loadArticleReturnsArticles() {
+        List<Article> articles = TestDataFactory.makeListArticles(10);
         when(mMockDataManager.getArticles())
-                .thenReturn(Observable.just(ribots));
+                .thenReturn(Observable.just(articles));
 
         mMainPresenter.loadArticles();
-        verify(mMockMainMvpView).showArticles(ribots);
+        verify(mMockMainMvpView).showArticles(articles);
         verify(mMockMainMvpView, never()).showArticlesEmpty();
         verify(mMockMainMvpView, never()).showError();
     }
 
     @Test
-    public void loadRibotsReturnsEmptyList() {
+    public void loadArticleReturnsEmptyList() {
         when(mMockDataManager.getArticles())
-                .thenReturn(Observable.just(Collections.<Ribot>emptyList()));
+                .thenReturn(Observable.just(Collections.<Article>emptyList()));
 
         mMainPresenter.loadArticles();
         verify(mMockMainMvpView).showArticlesEmpty();
-        verify(mMockMainMvpView, never()).showArticles(anyListOf(Ribot.class));
+        verify(mMockMainMvpView, never()).showArticles(anyListOf(Article.class));
         verify(mMockMainMvpView, never()).showError();
     }
 
     @Test
-    public void loadRibotsFails() {
+    public void loadArticlesFails() {
         when(mMockDataManager.getArticles())
-                .thenReturn(Observable.<List<Ribot>>error(new RuntimeException()));
+                .thenReturn(Observable.<List<Article>>error(new RuntimeException()));
 
         mMainPresenter.loadArticles();
         verify(mMockMainMvpView).showError();
         verify(mMockMainMvpView, never()).showArticlesEmpty();
-        verify(mMockMainMvpView, never()).showArticles(anyListOf(Ribot.class));
+        verify(mMockMainMvpView, never()).showArticles(anyListOf(Article.class));
     }
-*/
 }

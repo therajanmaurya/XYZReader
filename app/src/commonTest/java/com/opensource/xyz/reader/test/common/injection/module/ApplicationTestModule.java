@@ -1,17 +1,18 @@
 package com.opensource.xyz.reader.test.common.injection.module;
 
+import static org.mockito.Mockito.mock;
+
 import android.app.Application;
 import android.content.Context;
+
+import com.opensource.xyz.reader.data.DataManager;
+import com.opensource.xyz.reader.data.remote.ReaderService;
+import com.opensource.xyz.reader.injection.ApplicationContext;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import com.opensource.xyz.reader.data.DataManager;
-import com.opensource.xyz.reader.data.remote.ReaderService;
-import com.opensource.xyz.reader.injection.ApplicationContext;
-
-import static org.mockito.Mockito.mock;
 
 /**
  * Provides application-level dependencies for an app running on a testing environment
@@ -47,7 +48,7 @@ public class ApplicationTestModule {
 
     @Provides
     @Singleton
-    ReaderService provideRibotsService() {
+    ReaderService provideReaderService() {
         return mock(ReaderService.class);
     }
 

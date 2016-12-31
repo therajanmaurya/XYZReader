@@ -3,10 +3,8 @@ package com.opensource.xyz.reader.data;
 import com.opensource.xyz.reader.data.local.DatabaseHelper;
 import com.opensource.xyz.reader.data.local.PreferencesHelper;
 import com.opensource.xyz.reader.data.model.Article;
-import com.opensource.xyz.reader.data.model.Ribot;
 import com.opensource.xyz.reader.data.remote.ReaderService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,16 +32,6 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
-    public Observable<Ribot> syncRibots() {
-        return mReaderService.getRibots()
-                .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
-                    @Override
-                    public Observable<Ribot> call(List<Ribot> ribots) {
-                        return Observable.just(ribots.get(0));
-                    }
-                });
-    }
-
     public Observable<List<Article>> syncArticles() {
         return mReaderService.getArticles()
                 .concatMap(new Func1<List<Article>, Observable<? extends List<Article>>>() {
@@ -57,10 +45,4 @@ public class DataManager {
     public Observable<List<Article>> getArticles() {
         return mDatabaseHelper.getArticles().distinct();
     }
-
-    public Observable<List<Ribot>> getRibots() {
-        List<Ribot> ribots = new ArrayList<>();
-        return Observable.just(ribots);
-    }
-
 }
