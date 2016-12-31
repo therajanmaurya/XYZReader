@@ -6,6 +6,7 @@ import com.opensource.xyz.reader.data.model.Article;
 import com.opensource.xyz.reader.data.model.Ribot;
 import com.opensource.xyz.reader.data.remote.ReaderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class DataManager {
                 .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
                     @Override
                     public Observable<Ribot> call(List<Ribot> ribots) {
-                        return mDatabaseHelper.setRibots(ribots);
+                        return Observable.just(ribots.get(0));
                     }
                 });
     }
@@ -48,14 +49,18 @@ public class DataManager {
                 .concatMap(new Func1<List<Article>, Observable<? extends List<Article>>>() {
                     @Override
                     public Observable<? extends List<Article>> call(List<Article> articles) {
-                        return Observable.just(articles);
+                        return mDatabaseHelper.setArticles(articles);
                     }
                 });
     }
 
+    public Observable<List<Article>> getArticles() {
+        return mDatabaseHelper.getArticles().distinct();
+    }
 
     public Observable<List<Ribot>> getRibots() {
-        return mDatabaseHelper.getRibots().distinct();
+        List<Ribot> ribots = new ArrayList<>();
+        return Observable.just(ribots);
     }
 
 }

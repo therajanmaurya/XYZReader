@@ -3,10 +3,10 @@ package com.opensource.xyz.reader.data.local;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.opensource.xyz.reader.data.model.Article;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +16,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import com.opensource.xyz.reader.data.model.Ribot;
 
 @Singleton
 public class DatabaseHelper {
@@ -33,21 +32,21 @@ public class DatabaseHelper {
         return mDb;
     }
 
-    public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
-        return Observable.create(new Observable.OnSubscribe<Ribot>() {
+    public Observable<List<Article>> setArticles(final List<Article> articles) {
+        return Observable.create(new Observable.OnSubscribe<List<Article>>() {
             @Override
-            public void call(Subscriber<? super Ribot> subscriber) {
+            public void call(Subscriber<? super List<Article>> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
                 BriteDatabase.Transaction transaction = mDb.newTransaction();
                 try {
-                    mDb.delete(Db.RibotProfileTable.TABLE_NAME, null);
-                    for (Ribot ribot : newRibots) {
-                        long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
-                                Db.RibotProfileTable.toContentValues(ribot.profile()),
+                    mDb.delete(Db.ArticleTable.TABLE_NAME, null);
+                    for (Article article : articles) {
+                        long result = mDb.insert(Db.ArticleTable.TABLE_NAME,
+                                Db.ArticleTable.toContentValues(article),
                                 SQLiteDatabase.CONFLICT_REPLACE);
-                        if (result >= 0) subscriber.onNext(ribot);
                     }
                     transaction.markSuccessful();
+                    subscriber.onNext(articles);
                     subscriber.onCompleted();
                 } finally {
                     transaction.end();
@@ -56,13 +55,13 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return mDb.createQuery(Db.RibotProfileTable.TABLE_NAME,
-                "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME)
-                .mapToList(new Func1<Cursor, Ribot>() {
+    public Observable<List<Article>> getArticles() {
+        return mDb.createQuery(Db.ArticleTable.TABLE_NAME,
+                "SELECT * FROM " + Db.ArticleTable.TABLE_NAME)
+                .mapToList(new Func1<Cursor, Article>() {
                     @Override
-                    public Ribot call(Cursor cursor) {
-                        return Ribot.create(Db.RibotProfileTable.parseCursor(cursor));
+                    public Article call(Cursor cursor) {
+                        return Article.create(Db.ArticleTable.parseCursor(cursor));
                     }
                 });
     }

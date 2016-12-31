@@ -37,6 +37,19 @@ public abstract class Article implements Parcelable {
     @SerializedName("body")
     public abstract String body();
 
+    public static Article create(Article article) {
+        return new AutoValue_Article.Builder()
+                .setId(article.id())
+                .setPhoto(article.photo())
+                .setThumb(article.thumb())
+                .setAspectRatio(article.aspectRatio())
+                .setAuthor(article.author())
+                .setTitle(article.title())
+                .setBody(article.body())
+                .setPublishedDate(article.publishedDate())
+                .build();
+    }
+
     public static Builder builder() {
         return new AutoValue_Article.Builder();
     }

@@ -3,62 +3,62 @@ package com.opensource.xyz.reader.data.local;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import java.util.Date;
-
-import com.opensource.xyz.reader.data.model.Name;
-import com.opensource.xyz.reader.data.model.Profile;
+import com.opensource.xyz.reader.data.model.Article;
 
 public class Db {
 
-    public Db() { }
+    public Db() {
+    }
 
-    public abstract static class RibotProfileTable {
-        public static final String TABLE_NAME = "ribot_profile";
+    public abstract static class ArticleTable {
+        public static final String TABLE_NAME = "articles";
 
-        public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_FIRST_NAME = "first_name";
-        public static final String COLUMN_LAST_NAME = "last_name";
-        public static final String COLUMN_HEX_COLOR = "hex_color";
-        public static final String COLUMN_DATE_OF_BIRTH = "date_of_birth";
-        public static final String COLUMN_AVATAR = "avatar";
-        public static final String COLUMN_BIO = "bio";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_PHOTO = "photo";
+        public static final String COLUMN_THUMB = "thumb";
+        public static final String COLUMN_ASPECT_RATIO = "aspect_ratio";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_PUBLISHED_DATE = "published_date";
+        public static final String COLUMN_BODY = "body";
 
         public static final String CREATE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_EMAIL + " TEXT PRIMARY KEY, " +
-                        COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
-                        COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                        COLUMN_HEX_COLOR + " TEXT NOT NULL, " +
-                        COLUMN_DATE_OF_BIRTH + " INTEGER NOT NULL, " +
-                        COLUMN_AVATAR + " TEXT, " +
-                        COLUMN_BIO + " TEXT" +
-                " ); ";
+                        COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                        COLUMN_PHOTO + " TEXT NOT NULL, " +
+                        COLUMN_THUMB + " TEXT NOT NULL, " +
+                        COLUMN_ASPECT_RATIO + " FLOAT, " +
+                        COLUMN_AUTHOR + " TEXT NOT NULL, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_BODY + " TEXT, " +
+                        COLUMN_PUBLISHED_DATE + " TEXT" +
+                        " ); ";
 
-        public static ContentValues toContentValues(Profile profile) {
+        public static ContentValues toContentValues(Article article) {
             ContentValues values = new ContentValues();
-            values.put(COLUMN_EMAIL, profile.email());
-            values.put(COLUMN_FIRST_NAME, profile.name().first());
-            values.put(COLUMN_LAST_NAME, profile.name().last());
-            values.put(COLUMN_HEX_COLOR, profile.hexColor());
-            values.put(COLUMN_DATE_OF_BIRTH, profile.dateOfBirth().getTime());
-            values.put(COLUMN_AVATAR, profile.avatar());
-            if (profile.bio() != null) values.put(COLUMN_BIO, profile.bio());
+            values.put(COLUMN_ID, article.id());
+            values.put(COLUMN_PHOTO, article.photo());
+            values.put(COLUMN_THUMB, article.thumb());
+            values.put(COLUMN_ASPECT_RATIO, article.aspectRatio());
+            values.put(COLUMN_AUTHOR, article.author());
+            values.put(COLUMN_TITLE, article.title());
+            values.put(COLUMN_BODY, article.body());
+            values.put(COLUMN_PUBLISHED_DATE, article.publishedDate());
             return values;
         }
 
-        public static Profile parseCursor(Cursor cursor) {
-            Name name = Name.create(
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FIRST_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LAST_NAME)));
-            long dobTime = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE_OF_BIRTH));
-
-            return Profile.builder()
-                    .setName(name)
-                    .setEmail(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)))
-                    .setHexColor(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEX_COLOR)))
-                    .setDateOfBirth(new Date(dobTime))
-                    .setAvatar(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AVATAR)))
-                    .setBio(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIO)))
+        public static Article parseCursor(Cursor cursor) {
+            return Article.builder()
+                    .setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)))
+                    .setPhoto(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHOTO)))
+                    .setThumb(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_THUMB)))
+                    .setAspectRatio(cursor.getFloat(
+                            cursor.getColumnIndexOrThrow(COLUMN_ASPECT_RATIO)))
+                    .setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AUTHOR)))
+                    .setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)))
+                    .setBody(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BODY)))
+                    .setPublishedDate(cursor.getString(
+                            cursor.getColumnIndexOrThrow(COLUMN_PUBLISHED_DATE)))
                     .build();
         }
     }

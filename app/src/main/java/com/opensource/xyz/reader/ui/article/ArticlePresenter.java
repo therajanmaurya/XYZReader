@@ -41,7 +41,7 @@ public class ArticlePresenter extends BasePresenter<ArticleMvpView> {
     public void loadArticles() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncArticles()
+        mSubscription = mDataManager.getArticles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<Article>>() {

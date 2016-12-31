@@ -37,7 +37,7 @@ public class MainPresenterTest {
    /* @Test
     public void loadRibotsReturnsRibots() {
         List<Ribot> ribots = TestDataFactory.makeListRibots(10);
-        when(mMockDataManager.getRibots())
+        when(mMockDataManager.getArticles())
                 .thenReturn(Observable.just(ribots));
 
         mMainPresenter.loadArticles();
@@ -48,7 +48,7 @@ public class MainPresenterTest {
 
     @Test
     public void loadRibotsReturnsEmptyList() {
-        when(mMockDataManager.getRibots())
+        when(mMockDataManager.getArticles())
                 .thenReturn(Observable.just(Collections.<Ribot>emptyList()));
 
         mMainPresenter.loadArticles();
@@ -59,7 +59,7 @@ public class MainPresenterTest {
 
     @Test
     public void loadRibotsFails() {
-        when(mMockDataManager.getRibots())
+        when(mMockDataManager.getArticles())
                 .thenReturn(Observable.<List<Ribot>>error(new RuntimeException()));
 
         mMainPresenter.loadArticles();

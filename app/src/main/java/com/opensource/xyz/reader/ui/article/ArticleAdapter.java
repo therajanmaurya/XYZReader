@@ -51,7 +51,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
                 Utils.getTimeInMilliSeconds(article.publishedDate()),
                 System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_ALL).toString()
-                + " by"
+                + " by "
                 + article.author()
                 + "</font>");
         holder.thumbnailView.setImageUrl(article.thumb(),
