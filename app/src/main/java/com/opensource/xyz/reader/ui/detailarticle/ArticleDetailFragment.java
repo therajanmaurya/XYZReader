@@ -4,6 +4,7 @@ package com.opensource.xyz.reader.ui.detailarticle;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.Toolbar;
@@ -54,6 +55,9 @@ public class ArticleDetailFragment extends Fragment {
     @BindView(R.id.article_body)
     TextView tvArticleBody;
 
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+
 
     private Article mArticle;
     private View mRootView;
@@ -101,6 +105,7 @@ public class ArticleDetailFragment extends Fragment {
 
 
     private void bindViews() {
+        mCollapsingToolbarLayout.setTitle(mArticle.title());
         tvArticleTitle.setText(mArticle.title());
         tvArticleByLine.setText(Html.fromHtml(
                 DateUtils.getRelativeTimeSpanString(

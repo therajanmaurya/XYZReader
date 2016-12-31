@@ -64,11 +64,12 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
         mArticleList = new ArrayList<>();
 
         int columnCount = getResources().getInteger(R.integer.list_column_count);
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.item_offset);
+        mRecyclerView.addItemDecoration(itemDecoration);
         StaggeredGridLayoutManager sglm =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(sglm);
-        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.item_offset);
-        mRecyclerView.addItemDecoration(itemDecoration);
+
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mArticleAdapter.setContext(this);
         mRecyclerView.setAdapter(mArticleAdapter);
@@ -98,7 +99,7 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
 
     @Override
     public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
+        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_articles))
                 .show();
     }
 
@@ -106,7 +107,7 @@ public class ArticleActivity extends BaseActivity implements ArticleMvpView,
     public void showArticlesEmpty() {
         mArticleAdapter.setArticles(Collections.<Article>emptyList());
         mArticleAdapter.notifyDataSetChanged();
-        Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.empty_articles, Toast.LENGTH_LONG).show();
     }
 
     @Override
